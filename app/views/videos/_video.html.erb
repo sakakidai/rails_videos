@@ -1,0 +1,25 @@
+<div id="<%= dom_id video %>">
+  <p>
+    <strong>Title:</strong>
+    <%= video.title %>
+  </p>
+
+  <p>
+    <strong>Content:</strong>
+    <%= video.content %>
+  </p>
+
+  <p>
+    <strong>Thumbnail:</strong>
+    <br>
+    <% if video.thumbnail? %>
+      <%= image_tag video.thumbnail.url %>
+      <br>
+      <%= image_tag video.thumbnail.medium.url %>
+      <br>
+      <%= image_tag video.thumbnail.small.url %>
+      <br>
+    <% end %>
+  </p>
+
+</div>
