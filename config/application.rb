@@ -39,5 +39,8 @@ module RailsVideos
 
     # DB time zone
     config.active_record.default_timezone = :local
+
+    # Set locale
+    config.i18n.default_locale = :ja
   end
 end

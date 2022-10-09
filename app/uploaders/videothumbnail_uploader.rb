@@ -1,5 +1,6 @@
 class VideothumbnailUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  include MagicNumber
 
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
@@ -7,6 +8,10 @@ class VideothumbnailUploader < CarrierWave::Uploader::Base
 
   def cache_dir
     "uploads/cache/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
+
+  version :large do
+    process resize_to_fit: [1280, 720]
   end
 
   version :medium do
@@ -22,7 +27,11 @@ class VideothumbnailUploader < CarrierWave::Uploader::Base
   end
 
   def content_type_allowlist
-    [/image\//]
+    %w[image/gif image/jpeg image/png]
+  end
+
+  def size_range
+    0..5.megabyte
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

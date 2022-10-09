@@ -1,5 +1,6 @@
 CarrierWave.configure do |config|
   config.storage = :aws
+  # config.cache_storage = :file
   config.aws_bucket = Rails.application.credentials.dig(:aws, :bucket)
   config.aws_acl = 'private'
   config.asset_host_public = true

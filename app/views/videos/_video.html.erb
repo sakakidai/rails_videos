@@ -13,7 +13,7 @@
     <strong>Thumbnail:</strong>
     <br>
     <% if video.thumbnail? %>
-      <%= image_tag video.thumbnail.url %>
+      <%= image_tag video.thumbnail.large.url %>
       <br>
       <%= image_tag video.thumbnail.medium.url %>
       <br>

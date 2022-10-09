@@ -1,0 +1,10 @@
+ja:
+  activerecord:
+    models:
+      video: 動画
+
+    attributes:
+      video:
+        title: タイトル
+        content: 内容
+        thumbnail: サムネイル画像
