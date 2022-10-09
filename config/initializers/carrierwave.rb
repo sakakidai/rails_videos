@@ -2,8 +2,7 @@ CarrierWave.configure do |config|
   config.storage = :aws
   config.aws_bucket = Rails.application.credentials.dig(:aws, :bucket)
   config.aws_acl = 'private'
-
-  config.aws_authenticated_url_expiration = 60 * 60 * 24 * 7
+  config.asset_host_public = true
 
   config.aws_attributes = {
     expires: 1.week.from_now.httpdate,

@@ -33,5 +33,11 @@ module RailsVideos
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # ActiveSupport::TimeWithZone
+    config.time_zone = 'Tokyo'
+
+    # DB time zone
+    config.active_record.default_timezone = :local
   end
 end
