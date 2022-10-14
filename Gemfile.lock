@@ -99,6 +99,7 @@ GEM
     carrierwave-aws (1.5.0)
       aws-sdk-s3 (~> 1.0)
       carrierwave (~> 2.0)
+    clamby (1.6.8)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     debug (1.6.2)
@@ -219,6 +220,7 @@ DEPENDENCIES
   bootsnap
   carrierwave (~> 2.0)
   carrierwave-aws
+  clamby
   debug
   importmap-rails
   jbuilder

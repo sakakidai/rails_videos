@@ -23,5 +23,6 @@ end
 
 # not default
 gem 'carrierwave', '~> 2.0'
-gem "mini_magick"
-gem "carrierwave-aws"
+gem 'mini_magick'
+gem 'carrierwave-aws'
+gem 'clamby'

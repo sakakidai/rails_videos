@@ -9,6 +9,9 @@ ja:
       content_type_whitelist_error: "は%{content_type}ファイルは許可されていません"
       content_type_blacklist_error: "は%{content_type}ファイルは許可されていません"
       no_match_magic_number_error: は破損している可能性があるため、許可できません
+      clamscan_client_error: Clamby::ClamscanClientErrorが発生しました。デーモンプロセスが見つかりません。
+      clamscan_missing_error: Clamby::ClamscanMissingが発生しました。コマンドパスが見つかりません。
+      clamscan_virus_detected_error: 'はウィルスに感染している恐れがあるため削除されました。'
       rmagick_processing_error: "rmagickがファイルを処理できませんでした。画像を確認してください。エラーメッセージ: %{e}"
       mini_magick_processing_error: "MiniMagickがファイルを処理できませんでした。画像を確認してください。エラーメッセージ: %{e}"
       min_size_error: "を%{min_size}以上のサイズにしてください"

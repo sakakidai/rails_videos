@@ -17,4 +17,3 @@ module MagicNumber
     raise CarrierWave::IntegrityError, I18n.translate(:"errors.messages.no_match_magic_number_error")
   end
 end
-
