@@ -28,6 +28,12 @@
   </div>
 
   <div>
+    <%= form.label :video, style: "display: block" %>
+    <%= form.file_field :video %>
+    <%= form.hidden_field :video_cache %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

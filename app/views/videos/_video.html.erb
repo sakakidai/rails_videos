@@ -13,12 +13,15 @@
     <strong>Thumbnail:</strong>
     <br>
     <% if video.thumbnail? %>
-      <%= image_tag video.thumbnail.large.url %>
-      <br>
       <%= image_tag video.thumbnail.medium.url %>
-      <br>
-      <%= image_tag video.thumbnail.small.url %>
-      <br>
+    <% end %>
+  </p>
+
+  <p>
+    <strong>Video</strong>
+    <br>
+    <% if video.video? %>
+      <%= video_tag(video.video.url, controls: true)  %>
     <% end %>
   </p>
 
