@@ -12,6 +12,31 @@ module FFmpeg
   #   attr_reader :config
   # end
 
+  class Video
+    attr_accessor :uploader, :output_index_file, :cache_dir
+
+    def initialize(uploader)
+      @uploader = uploader
+      @cache_dir = build_cache_dir
+    end
+
+    def delete_cache_dir
+      FileUtils.rm_r(cache_dir)
+    end
+
+    def transcode_hls
+      ffmpeg = FFmpeg::Transcoder.new(uploader.url, cache_dir)
+      ffmpeg.transcode_hls
+      output_index_file = ffmpeg.output_index_file
+    end
+
+    private
+
+    def build_cache_dir
+      FileUtils.mkdir_p("public/ffmpegs/cache/#{uploader.model.class.to_s.underscore}/#{uploader.model.id}")[0]
+    end
+  end
+
   class Outptter
     attr_reader :command, :file
 
@@ -42,17 +67,9 @@ module FFmpeg
       @input = input
       @hls_time = '10'
       file_name = ext_less_file_name
-      output_dir = specific_output_dir || output_dir
+      output_dir = specific_output_dir || input_dirname
       @hls_segment_filename = "#{output_dir}/#{file_name}%3d.ts"
       @output_index_file = "#{output_dir}/#{file_name}.m3u8"
-    end
-
-    def ext_less_file_name
-      File.basename(input, '.*')
-    end
-
-    def output_dir
-      File.dirname(input)
     end
 
     def transcode_hls
@@ -67,6 +84,16 @@ module FFmpeg
       ensure
         stdin.close
       end
+    end
+
+    private
+
+    def ext_less_file_name
+      File.basename(input, '.*')
+    end
+
+    def input_dirname
+      File.dirname(input)
     end
   end
 end
