@@ -3,6 +3,15 @@ class VideothumbnailUploader < CarrierWave::Uploader::Base
   include MagicNumber
   include VirusScan
 
+  configure do |config|
+    config.asset_host_public = true
+
+    config.aws_attributes = {
+      expires: 1.week.from_now.httpdate,
+      cache_control: 'max-age=604800'
+    }
+  end
+
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end

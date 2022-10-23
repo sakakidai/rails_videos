@@ -23,27 +23,21 @@ class VideosController < ApplicationController
   def create
     @video = Video.new(video_params)
 
-    respond_to do |format|
-      if @video.save
-        format.html { redirect_to video_url(@video), notice: "Video was successfully created." }
-        format.json { render :show, status: :created, location: @video }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @video.errors, status: :unprocessable_entity }
-      end
+    if @video.save
+      @video.upload_hls_files
+      redirect_to video_url(@video), notice: "Video was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /videos/1 or /videos/1.json
   def update
-    respond_to do |format|
-      if @video.update(video_params)
-        format.html { redirect_to video_url(@video), notice: "Video was successfully updated." }
-        format.json { render :show, status: :ok, location: @video }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @video.errors, status: :unprocessable_entity }
-      end
+    if @video.update(video_params)
+      @video.upload_hls_files
+      redirect_to video_url(@video), notice: "Video was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

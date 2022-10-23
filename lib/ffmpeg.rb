@@ -13,11 +13,12 @@ module FFmpeg
   # end
 
   class Video
-    attr_accessor :uploader, :output_index_file, :cache_dir
+    attr_accessor :uploader, :index_file, :cache_dir, :segment_files
 
     def initialize(uploader)
       @uploader = uploader
       @cache_dir = build_cache_dir
+      @segment_files = []
     end
 
     def delete_cache_dir
@@ -26,8 +27,10 @@ module FFmpeg
 
     def transcode_hls
       ffmpeg = FFmpeg::Transcoder.new(uploader.url, cache_dir)
-      ffmpeg.transcode_hls
-      output_index_file = ffmpeg.output_index_file
+      if ffmpeg.transcode_hls
+        self.index_file = ffmpeg.output_index_file
+        self.segment_files = Dir.entries(cache_dir).grep(/\A#{ffmpeg.file_name}\d+.ts/).map {|segment| "#{cache_dir}/#{segment}"}
+      end
     end
 
     private
@@ -38,13 +41,14 @@ module FFmpeg
   end
 
   class Outptter
-    attr_reader :command, :file
+    attr_reader :file
 
     def initialize(file)
-      @command = ['ffprobe', '-i', file, *%w(-print_format json -show_format -show_streams -show_error)]
+      @file = file
     end
 
     def fetch_metadata
+      command = ['ffprobe', '-i', file, *%w(-print_format json -show_format -show_streams -show_error)]
       stdin, stdout, stderr, wait_thr = Open3.popen3(*command)
       begin
         if wait_thr.value.success?
@@ -61,12 +65,12 @@ module FFmpeg
   end
 
   class Transcoder
-    attr_reader :command, :input, :hls_time, :hls_segment_filename, :output_index_file
+    attr_reader :input, :file_name, :hls_time, :hls_segment_filename, :output_index_file
 
     def initialize(input, specific_output_dir = nil)
       @input = input
       @hls_time = '10'
-      file_name = ext_less_file_name
+      @file_name = ext_less_file_name
       output_dir = specific_output_dir || input_dirname
       @hls_segment_filename = "#{output_dir}/#{file_name}%3d.ts"
       @output_index_file = "#{output_dir}/#{file_name}.m3u8"
@@ -77,7 +81,9 @@ module FFmpeg
       command = ['ffmpeg', '-i', input, *options, output_index_file]
       stdin, _, stderr, wait_thr = Open3.popen3(*command)
       begin
-        if !wait_thr.value.success?
+        if wait_thr.value.success?
+          return true
+        else
           std_error = stderr.read
           raise FFmpegError, "[failed command] #{command} [message] #{std_error}"
         end

@@ -3,12 +3,6 @@ CarrierWave.configure do |config|
   # config.cache_storage = :file
   config.aws_bucket = Rails.application.credentials.dig(:aws, :bucket)
   config.aws_acl = 'private'
-  config.asset_host_public = true
-
-  config.aws_attributes = {
-    expires: 1.week.from_now.httpdate,
-    cache_control: 'max-age=604800'
-  }
 
   config.aws_credentials = {
     access_key_id: Rails.application.credentials.dig(:aws, :access_key_id),

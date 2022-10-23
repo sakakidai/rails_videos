@@ -20,9 +20,14 @@
   <p>
     <strong>Video</strong>
     <br>
-    <% if video.video? %>
-      <%= video_tag(video.video.url, controls: true)  %>
+    <% if video.video_hls? %>
+      <video class="video-js" data-setup={} controls playsinline>
+        <%= tag.source src: video.video_hls.url, type: "application/x-mpegURL" %>
+      </video>
+    <% elsif video.video? %>
+      <video class="video-js" data-setup={} controls playsinline>
+        <%= tag.source src: video.video.url, type: "video/mp4" %>
+      </video>
     <% end %>
   </p>
-
 </div>
